@@ -63,7 +63,7 @@ public class Task {
         return "Task{" +
                 "uuid=" + uuid +
                 ", description='" + description + '\'' +
-                ", status=" + status +
+                ", status=" + status.getStatus() +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
