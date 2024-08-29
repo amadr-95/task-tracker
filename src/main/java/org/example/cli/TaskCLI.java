@@ -23,6 +23,7 @@ public class TaskCLI {
             switch (command) {
                 case "add" -> createTask();
                 case "list" -> listTasks();
+                case "delete" -> deleteTask();
                 case "exit" -> System.out.println("Bye 👋🏼");
                 default -> {
                     System.out.println("Command not recognised. Try again");
@@ -60,6 +61,11 @@ public class TaskCLI {
         String description = scanner.next();
         UUID taskID = taskService.createTask(description).getUuid();
         System.out.printf("Task added successfully (ID: %s)%n", taskID);
+    }
+
+    private void deleteTask() {
+        String Uuid = scanner.next();
+        taskService.deleteTask(UUID.fromString(Uuid));
     }
 
     private void printBanner() {

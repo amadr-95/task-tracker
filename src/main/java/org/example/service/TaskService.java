@@ -1,9 +1,11 @@
 package org.example.service;
 
+import org.example.exception.TaskNotFoundException;
 import org.example.model.Task;
 import org.example.repository.TaskRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 public class TaskService {
 
@@ -24,5 +26,19 @@ public class TaskService {
 
     public List<Task> listTasks() {
         return taskRepository.listTasks();
+    }
+    
+    public void deleteTask(UUID taskId) {
+        Task task = findTaskById(taskId);
+        taskRepository.deleteTask(task);
+    }
+
+    private Task findTaskById(UUID taskId) {
+        return taskRepository.listTasks().stream()
+                .filter(task -> task.getUuid().equals(taskId))
+                .findFirst()
+                .orElseThrow(() -> new TaskNotFoundException(
+                        String.format("Task ID %s does not exist", taskId)));
+
     }
 }

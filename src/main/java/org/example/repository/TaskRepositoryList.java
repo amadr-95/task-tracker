@@ -19,4 +19,9 @@ public class TaskRepositoryList implements TaskRepository {
     public List<Task> listTasks() {
         return tasks;
     }
+
+    @Override
+    public void deleteTask(Task task) {
+        tasks.remove(task);
+    }
 }
