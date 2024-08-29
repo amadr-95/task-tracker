@@ -6,7 +6,7 @@ public enum TaskStatus {
     IN_PROGRESS("in progress"),
     DONE("done");
 
-    private String status;
+    private final String status;
 
     TaskStatus(String status) {
         this.status = status;
