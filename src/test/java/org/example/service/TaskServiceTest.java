@@ -3,7 +3,7 @@ package org.example.service;
 import org.example.model.Task;
 import org.example.repository.TaskRepositoryList;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -16,14 +16,14 @@ class TaskServiceTest {
 
     private static TaskService underTest;
 
-    @BeforeAll
-    static void beforeAll() {
+    @BeforeEach
+    void setUp() {
         underTest = new TaskService(new TaskRepositoryList());
     }
 
     @AfterEach
     void tearDown() {
-        underTest.listTasks().clear();
+        underTest = null;
     }
 
     @Test
