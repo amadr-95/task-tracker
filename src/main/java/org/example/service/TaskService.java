@@ -4,7 +4,6 @@ import org.example.model.Task;
 import org.example.repository.TaskRepository;
 
 import java.util.List;
-import java.util.UUID;
 
 public class TaskService {
 
@@ -14,7 +13,7 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public UUID createTask(String description) {
+    public Task createTask(String description) {
         // check description
         if(description == null || description.isBlank())
             throw new IllegalArgumentException("Description can not be empty");
