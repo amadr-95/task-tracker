@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.exception.TaskFieldException;
 import org.example.model.Task;
 import org.example.repository.TaskRepositoryList;
 import org.junit.jupiter.api.AfterEach;
@@ -27,8 +28,8 @@ class TaskServiceTest {
     }
 
     @Test
-    void it_should_create_task() {
-        //given a task description
+    void it_should_create_task() throws TaskFieldException {
+        //given a valid task description
         String description = "finish project";
 
         //When
@@ -45,21 +46,22 @@ class TaskServiceTest {
     @Test
     void it_should_throw_exception_when_description_is_null() {
         // When / Then
-        assertThrows(IllegalArgumentException.class, () -> underTest.createTask(null));
+        assertThrows(TaskFieldException.class, () -> underTest.createTask(null));
     }
 
     @Test
     void it_should_throw_exception_when_description_is_empty() {
-        //Given
+        //Given a not valid description
         String description = "";
         //When / Then
-        String exceptionMessage = assertThrows(IllegalArgumentException.class, () -> underTest.createTask(description))
+        String exceptionMessage = assertThrows(TaskFieldException.class,
+                () -> underTest.createTask(description))
                 .getMessage();
         assertEquals(exceptionMessage, "Description can not be empty");
     }
 
     @Test
-    void it_should_return_a_list_of_tasks() {
+    void it_should_return_a_list_of_tasks() throws TaskFieldException {
         //Given
         String description = "finish project";
         underTest.createTask(description);

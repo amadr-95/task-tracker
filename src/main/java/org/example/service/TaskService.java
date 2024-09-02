@@ -1,6 +1,7 @@
 package org.example.service;
 
-import org.example.exception.TaskNotFoundException;
+import org.example.exception.TaskException;
+import org.example.exception.TaskFieldException;
 import org.example.model.Task;
 import org.example.repository.TaskRepository;
 
@@ -15,10 +16,10 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public Task createTask(String description) {
+    public Task createTask(String description) throws TaskFieldException {
         // check description
         if(description == null || description.isBlank())
-            throw new IllegalArgumentException("Description can not be empty");
+            throw new TaskFieldException("Description can not be empty");
 
         Task task = new Task(description);
         return taskRepository.createTask(task);
@@ -28,12 +29,12 @@ public class TaskService {
         return taskRepository.listTasks();
     }
     
-    public void deleteTask(String taskId) throws TaskNotFoundException {
+    public void deleteTask(String taskId) throws TaskException {
         UUID uuid;
         try {
             uuid = UUID.fromString(taskId);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException(e);
+            throw new TaskFieldException("UUID has not have valid format. Try again.");
         }
         taskRepository.deleteTask(uuid);
     }

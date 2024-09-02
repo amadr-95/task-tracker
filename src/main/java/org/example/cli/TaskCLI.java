@@ -1,5 +1,7 @@
 package org.example.cli;
 
+import org.example.exception.TaskException;
+import org.example.exception.TaskFieldException;
 import org.example.exception.TaskNotFoundException;
 import org.example.model.Task;
 import org.example.service.TaskService;
@@ -60,8 +62,12 @@ public class TaskCLI {
 
     private void createTask() {
         String description = scanner.next();
-        UUID taskID = taskService.createTask(description).getUuid();
-        System.out.printf("Task added successfully (ID: %s)%n", taskID);
+        try {
+            UUID taskID = taskService.createTask(description).getUuid();
+            System.out.printf("Task added successfully (ID: %s)%n", taskID);
+        } catch (TaskFieldException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void deleteTask() {
@@ -69,7 +75,7 @@ public class TaskCLI {
         try {
             taskService.deleteTask(uuid);
             System.out.printf("Task deleted successfully (ID: %s)%n", uuid);
-        } catch (TaskNotFoundException e) {
+        } catch (TaskException e) {
             System.out.println(e.getMessage());
         }
     }

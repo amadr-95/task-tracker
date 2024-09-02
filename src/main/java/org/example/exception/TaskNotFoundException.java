@@ -1,6 +1,6 @@
 package org.example.exception;
 
-public class TaskNotFoundException extends Exception {
+public class TaskNotFoundException extends TaskException {
     public TaskNotFoundException() {
         super();
     }
