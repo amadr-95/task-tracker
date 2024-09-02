@@ -1,9 +1,11 @@
 package org.example.repository;
 
+import org.example.exception.TaskNotFoundException;
 import org.example.model.Task;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class TaskRepositoryList implements TaskRepository {
 
@@ -21,7 +23,16 @@ public class TaskRepositoryList implements TaskRepository {
     }
 
     @Override
-    public void deleteTask(Task task) {
-        tasks.remove(task);
+    public void deleteTask(UUID taskId) throws TaskNotFoundException {
+        tasks.remove(findTaskById(taskId));
+    }
+
+    private Task findTaskById(UUID taskId) throws TaskNotFoundException {
+        return tasks.stream()
+                .filter(task -> task.getUuid().equals(taskId))
+                .findFirst()
+                .orElseThrow(() -> new TaskNotFoundException(
+                        String.format("Task ID %s does not exist. Try again.", taskId)));
+
     }
 }

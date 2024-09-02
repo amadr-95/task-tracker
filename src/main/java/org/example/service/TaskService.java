@@ -28,17 +28,14 @@ public class TaskService {
         return taskRepository.listTasks();
     }
     
-    public void deleteTask(UUID taskId) {
-        Task task = findTaskById(taskId);
-        taskRepository.deleteTask(task);
+    public void deleteTask(String taskId) throws TaskNotFoundException {
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(taskId);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException(e);
+        }
+        taskRepository.deleteTask(uuid);
     }
 
-    private Task findTaskById(UUID taskId) {
-        return taskRepository.listTasks().stream()
-                .filter(task -> task.getUuid().equals(taskId))
-                .findFirst()
-                .orElseThrow(() -> new TaskNotFoundException(
-                        String.format("Task ID %s does not exist", taskId)));
-
-    }
 }

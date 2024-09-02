@@ -1,5 +1,6 @@
 package org.example.cli;
 
+import org.example.exception.TaskNotFoundException;
 import org.example.model.Task;
 import org.example.service.TaskService;
 
@@ -36,8 +37,8 @@ public class TaskCLI {
     private void printHelp() {
         String help = """
                 - add [description] : Add a new task
-                - update [id] [description] : Update a task
                 - delete [id] : Delete a task
+                - update [id] [description] : Update a task
                 - mark-todo [id] : Mark a task as Todo
                 - mark-in-progress [id] : Mark a task as In-Progress
                 - mark-done [id] : Mark a task as Done
@@ -64,8 +65,13 @@ public class TaskCLI {
     }
 
     private void deleteTask() {
-        String Uuid = scanner.next();
-        taskService.deleteTask(UUID.fromString(Uuid));
+        String uuid = scanner.next();
+        try {
+            taskService.deleteTask(uuid);
+            System.out.printf("Task deleted successfully (ID: %s)%n", uuid);
+        } catch (TaskNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void printBanner() {
