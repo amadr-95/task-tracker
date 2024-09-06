@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.exception.TaskException;
 import org.example.exception.TaskFieldException;
 import org.example.model.Task;
 import org.example.repository.TaskRepositoryList;
@@ -15,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TaskServiceTest {
 
-    private static TaskService underTest;
+    private TaskService underTest;
 
     @BeforeEach
     void setUp() {
@@ -71,6 +72,29 @@ class TaskServiceTest {
 
         //Then
         assertEquals(tasks.size(), 1);
+    }
+
+    @Test
+    void it_should_delete_task() throws TaskException {
+        //Given a valid UUID (create task)
+        String taskId = underTest.createTask("test").getUuid().toString();
+
+        //When
+        underTest.deleteTask(taskId);
+
+        //Then
+        assertEquals(underTest.listTasks().size(), 0);
+    }
+
+    @Test
+    void it_should_throw_exception_when_uuid_is_not_valid() {
+        //Given a valid UUID (create task)
+        String taskId = "not valid UUID";
+
+        // When / Then
+        String message = assertThrows(TaskFieldException.class,
+                () -> underTest.deleteTask(taskId)).getMessage();
+        assertEquals(message, "UUID has not have valid format. Try again.");
     }
 
 }
